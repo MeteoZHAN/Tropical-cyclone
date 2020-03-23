@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Mar 19 21:05:10 2020
-
-@author: ZHAN
-"""
 
 from netCDF4 import Dataset
 import numpy as np
@@ -88,6 +83,7 @@ x1 = np.arange(1989,2019,1)
 y1 = z1[0]*x1 + z1[1]
 z2 = np.polyfit(x, c5, 1)
 y2 = z2[0]*x1 + z2[1]
+
 plt.figure(num=1)
 plt.plot(x1,y1,'b--')
 plt.plot(x,c4,label='usa_wind TY-4',color='b')
@@ -98,12 +94,14 @@ plt.ylabel('4-5类台风次数')
 plt.legend()
 plt.show()
 
+
 z3 = np.polyfit(x, np.array(c4)/np.array(c)*100, 1)
 x1 = np.arange(1989,2019,1)
 y3 = z3[0]*x1 + z3[1]
 z4 = np.polyfit(x, np.array(c5)/np.array(c)*100, 1)
 y4 = z4[0]*x1 + z4[1]
 plt.figure(num=2)
+
 plt.plot(x,y3,'b--')
 plt.plot(x,np.array(c4)/np.array(c)*100,label='usa_wind TY-4',color='b')
 plt.plot(x,y4,'r--')

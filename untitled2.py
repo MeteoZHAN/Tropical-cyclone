@@ -69,24 +69,28 @@ for i in range(0,len(ty_needen)):
 
 #每一类占比
 r_ri = ri/(ri+si+n+iw) * 100
+print(r_ri)
 r_si = si/(ri+si+n+iw)  * 100
+print(r_si)
 r_n = n/(ri+si+n+iw) * 100
+print(r_n)
 r_iw = iw/(ri+si+n+iw) * 100     
- 
-# plt.figure(num=1) # 各类型台风比例图
-# name_list = ['RI','SI','N','IW']
-# num = [r_ri,r_si,r_n,r_iw]
-# plt.bar(range(4), num, color = ['r','g','b','y'], tick_label=name_list)
-# plt.ylabel('台风个数占比(%)')
-# plt.xlabel('台风类型')
-# plt.show()
+print(r_iw) 
+
+plt.figure(num=3) # 各类型台风比例图
+name_list = ['RI','SI','N','IW']
+num = [r_ri,r_si,r_n,r_iw]
+plt.bar(range(4), num, color = ['r','g','b','y'], tick_label=name_list)
+plt.ylabel('台风个数占比(%)')
+plt.xlabel('台风类型')
+plt.show()
 
 lon = lon[num_i]
 lat = lat[num_i]
 # 打1*1网格            
-x = np.linspace(-180,180,361)   #lon: 1*1
-y = np.linspace(90,-90,181)     #lat: 1*1
-X,Y = np.meshgrid(x, y)         # 1*1网格
+x = np.linspace(-180,180,361)   # lon: 1*1
+y = np.linspace(90,-90,181)     # lat: 1*1
+X,Y = np.meshgrid(x, y)         # 生成1*1网格
 
 # 判断出台风路径所属格点位置
 i_id = []
@@ -111,7 +115,6 @@ for i in range(77):
 
 arr = np.array([j_id,i_id])  # 出现台风的格点
 n = [j_id,i_id]
-# print(n.count(j_id[0],i_id[0]))
 
 m_grids = np.transpose(arr)   # 出现台风的格点转置
 grids = np.array(list(set([tuple(t) for t in m_grids]))) # 去重
@@ -123,8 +126,8 @@ for grid in grids:
             count += 1
     gc.append(count)  # 各格点计数
 
-# Z = np.zeros((181,361),dtype=int)
-Z = np.full([181,361], np.nan)
+
+Z = np.full([181,361], np.nan) # 设置nan数组
 for i in range(181):
     for j in range(361):
         r = -1
@@ -133,11 +136,7 @@ for i in range(181):
             if k[0] == i and k[1] == j:
                 Z[i,j] = gc[r]
 
-
-
-
-
-plt.figure(num=2) # 台风路径图
+plt.figure(num=4) # 台风路径图
 ax = plt.axes(projection=ccrs.PlateCarree(central_longitude=0))
 ax.coastlines(resolution='110m')
 plt.ylabel('纬度')
@@ -153,25 +152,19 @@ ax.set_yticks([-90, -60, -30, 0, 30, 60, 90], crs=ccrs.PlateCarree())
 plt.grid(True)
 plt.show()
 
-plt.figure(num=3)  # 台风次数图
+plt.figure(num=5,figsize=(6, 4), dpi=100,clear=True)  # 台风次数图
 ax = plt.axes(projection = ccrs.PlateCarree(central_longitude=0))
 ax.coastlines(resolution = '110m')
-fig = plt.contourf(X, Y, Z, 10)
-ax.set_xticks([0, -60, -120, 60, 120, 180, -180], crs = ccrs.PlateCarree())
-ax.set_yticks([-90, -60, -30, 0, 30, 60, 90], crs = ccrs.PlateCarree())
-cbar = plt.colorbar(fig, orientation = 'horizontal')
-cbar.set_label('次数', fontproperties = 'SimHei')
+fig = plt.contourf(X, Y, Z, 10,levels = [1,3,5,7,9,12])
+ax.set_xticks([0, -60, -120, 60, 100,120, 140,160,180, -180], 
+              crs = ccrs.PlateCarree())
+ax.set_yticks([-90, -60, -30, 0,10,20,30,40,50, 90], crs = ccrs.PlateCarree())
 plt.grid(True)
-plt.ylabel('纬度')
-plt.xlabel('经度')
+plt.xlim(100, 180)
+plt.ylim(0, 50)
+cbar = plt.colorbar(fig, orientation = 'horizontal',
+                    fraction = 0.06, pad = 0.15) # fraction cbar相对长度，pad表示距离图片相对位置
+cbar.set_label('次数(个)', fontproperties = 'SimHei')
+plt.ylabel('纬度(°)')
+plt.xlabel('经度(°)')
 plt.show()
-
-
-
-
-
-
-
-
-
-
