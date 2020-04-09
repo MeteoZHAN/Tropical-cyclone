@@ -29,7 +29,6 @@ for i in range(0, len(date)):
     except:
         continue
 
-
 for i in range(0, len(date)):
     try:
         if int(date[i,1,0]) == 2 and int(date[i,1,1]) == 0 \
@@ -78,35 +77,86 @@ for k in range(0,30):
     
 x = range(1989,2019)
 
-z1 = np.polyfit(x, c4, 1)
+
 x1 = np.arange(1989,2019,1)
+
+z1 = np.polyfit(x, c4, 1)
 y1 = z1[0]*x1 + z1[1]
+
 z2 = np.polyfit(x, c5, 1)
 y2 = z2[0]*x1 + z2[1]
 
-plt.figure(num=1)
-plt.plot(x1,y1,'b--')
-plt.plot(x,c4,label='usa_wind TY-4',color='b')
-plt.plot(x1,y2,'r--')
-plt.plot(x,c5,label='usa_wind TY-5',color='r')
-plt.xlabel('年')
-plt.ylabel('4-5类台风次数')
-plt.legend()
-plt.show()
+c4_np = np.array(c4)
+c5_np = np.array(c5)
+c4_and_c5 = c4_np + c5_np
+z4_5 = np.polyfit(x, c4_and_c5, 1)
+y4_5 = z4_5[0]*x1 + z4_5[1]
 
+
+font1 = {'family':'SimHei','weight':'normal','size':10}
+font2 = {'family':'Times New Roman','weight':'normal','size':10}
+
+plt.figure(num=1)
+plt.plot(x1,y1,'k--')
+plt.plot(x,c4,'ko-',label='usa_wind TY-4')
+plt.plot(x1,y2,'k--')
+plt.plot(x,c5,'k*-',label='usa_wind TY-5')
+plt.xlabel('Year',font2)
+plt.ylabel('Typhoon frequency of 4-5 classes',font2)
+plt.legend(prop = font2)
+#设置坐标刻度值的大小以及刻度值的字体
+ax = plt.gca()
+plt.tick_params(labelsize = 12)
+labels = ax.get_xticklabels() + ax.get_yticklabels()
+[label.set_fontname('Times New Roman') for label in labels]
+plt.show()
 
 z3 = np.polyfit(x, np.array(c4)/np.array(c)*100, 1)
 x1 = np.arange(1989,2019,1)
 y3 = z3[0]*x1 + z3[1]
 z4 = np.polyfit(x, np.array(c5)/np.array(c)*100, 1)
 y4 = z4[0]*x1 + z4[1]
-plt.figure(num=2)
 
-plt.plot(x,y3,'b--')
-plt.plot(x,np.array(c4)/np.array(c)*100,label='usa_wind TY-4',color='b')
-plt.plot(x,y4,'r--')
-plt.plot(x,np.array(c5)/np.array(c)*100,label='usa_wind TY-5',color='r')
-plt.xlabel('年')
-plt.ylabel('4-5类台风占比(%)')
-plt.legend()
+plt.figure(num=2)
+plt.plot(x,y3,'k--')
+plt.plot(x,np.array(c4)/np.array(c)*100,'ko-',label='usa_wind TY-4')
+plt.plot(x,y4,'k--')
+plt.plot(x,np.array(c5)/np.array(c)*100,'k*-',label='usa_wind TY-5')
+plt.xlabel('Year',font2)
+plt.ylabel('Proportion of 4-5 typhoons (%)',font2)
+plt.legend(prop = font2)
+#设置坐标刻度值的大小以及刻度值的字体
+ax = plt.gca()
+plt.tick_params(labelsize = 12)
+labels = ax.get_xticklabels() + ax.get_yticklabels()
+[label.set_fontname('Times New Roman') for label in labels]
 plt.show()
+
+plt.figure(num=3)
+plt.plot(x1,y4_5,'k--')
+plt.plot(x,c4_and_c5,'ko-',label = 'usa_wind TY-4 and TY-5')
+plt.xlabel('Year',font2)
+plt.ylabel('Typhoon total frequency of 4-5 classes',font2)
+plt.legend(prop = font2)
+#设置坐标刻度值的大小以及刻度值的字体
+ax = plt.gca()
+plt.tick_params(labelsize = 12)
+labels = ax.get_xticklabels() + ax.get_yticklabels()
+[label.set_fontname('Times New Roman') for label in labels]
+plt.show()
+
+plt.figure(num=4)
+z444 = np.polyfit(x, c4_and_c5/np.array(c)*100, 1)
+y444 = z444[0]*x1 + z444[1]
+plt.plot(x,y444,'k--')
+plt.plot(x,c4_and_c5/np.array(c)*100,'ko-',label='usa_wind TY-4 and TY-5')
+plt.xlabel('Year',font2)
+plt.ylabel('Proportion of 4-5 typhoons (%)',font2)
+plt.legend(prop = font2)
+#设置坐标刻度值的大小以及刻度值的字体
+ax = plt.gca()
+plt.tick_params(labelsize = 12)
+labels = ax.get_xticklabels() + ax.get_yticklabels()
+[label.set_fontname('Times New Roman') for label in labels]
+plt.show()
+
